@@ -246,6 +246,7 @@ async function handleTable(parent, node, prefix, context, selections, tables, wh
     await dialect.handlePaginationAtRoot(parent, node, context, tables)
   } else if (node.limit) {
     node.args.first = node.limit
+    node.args.offset = node.offset
     await dialect.handlePaginationAtRoot(parent, node, context, tables)
   } else {
     assert(!parent, `Object type for "${node.fieldName}" table must have a "sqlJoin" or "sqlBatch"`)

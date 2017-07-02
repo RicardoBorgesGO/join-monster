@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { filter } from 'lodash'
+import { filter,some,includes } from 'lodash'
 import { validateSqlAST, inspect, wrap } from '../util'
 import {
   joinPrefix,
@@ -26,11 +26,14 @@ export default async function stringifySqlAST(topNode, context, options) {
 
   // bail out if they made no selections
   if (!selections.length) return ''
-
+  
+  let hasCount = some(selections, (str)=> includes(str, '$total'))
+  let findCountSql = !hasCount ? ', count\\(\\*\\) OVER \\(\\) AS \\"\\$total\\"' : "----"
+  
   // put together the SQL query
   let sql = 'SELECT\n  ' +
     selections.join(',\n  ') + '\n' +
-    tables.join('\n')
+    tables.join('\n').replace(new RegExp(findCountSql,"g"),'')
 
   wheres = filter(wheres)
   if (wheres.length) {

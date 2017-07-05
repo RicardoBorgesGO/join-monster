@@ -119,7 +119,7 @@ function interpretForOffsetPaging(node, dialect) {
   let limit = ['mariadb', 'mysql', 'oracle'].includes(name) ? '18446744073709551615' : 'ALL';
   let offset = ((_ref4 = node) != null ? (_ref4 = _ref4.args) != null ? _ref4.offset : _ref4 : _ref4) || 0;
   if ((_ref5 = node) != null ? (_ref5 = _ref5.args) != null ? _ref5.first : _ref5 : _ref5) {
-    limit = parseInt(node.args.first, 10);
+    limit = node.args.first;
 
     if (node.paginate) {
       limit++;

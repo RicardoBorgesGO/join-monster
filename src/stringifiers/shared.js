@@ -97,7 +97,7 @@ export function interpretForOffsetPaging(node, dialect) {
   let limit = [ 'mariadb', 'mysql', 'oracle' ].includes(name) ? '18446744073709551615' : 'ALL'
   let offset = idx(node, _ => _.args.offset) || 0
   if (idx(node, _ => _.args.first)) {
-    limit = parseInt(node.args.first, 10)
+    limit = node.args.first
     // we'll get one extra item (hence the +1). this is to determine if there is a next page or not
     if (node.paginate) {
       limit++
